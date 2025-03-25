@@ -1,8 +1,6 @@
 import unittest
 
-from textnode import TextNode, TextType
-
-
+from src.mypackage.text_node import TextNode, TextType
 class TestTextNode(unittest.TestCase):
     def test_text(self):
         node1 = TextNode("This is a text node", TextType.BOLD)

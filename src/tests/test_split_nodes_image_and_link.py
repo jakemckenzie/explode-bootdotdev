@@ -1,19 +1,20 @@
 import unittest
-from textnode import TextNode, TextType
-from split_nodes_image_and_link import split_nodes_image, split_nodes_link
+from src.mypackage.text_node import TextNode, TextType
+from src.mypackage.utils.split_nodes_image_and_link import split_nodes_image, split_nodes_link
 
 class TestSplitNodesImage(unittest.TestCase):
     def test_split_single_image(self):
         node = TextNode(
-            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)",
+            "This is text with an ![image](https://example.com/zjjcJKZ.png)",
             TextType.NORMAL
         )
         result = split_nodes_image([node])
         expected = [
             TextNode("This is text with an ", TextType.NORMAL),
-            TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png")
+            TextNode("image", TextType.IMAGE, "https://example.com/zjjcJKZ.png")
         ]
         self.assertListEqual(result, expected)
+
         
     def test_split_multiple_images(self):
         text = ("Text before ![first](https://example.com/first.jpg) middle "
@@ -82,7 +83,6 @@ class TestSplitNodesImage(unittest.TestCase):
         node = TextNode(text, TextType.NORMAL)
         result = split_nodes_image([node])
         expected = [
-            # No TEXT node for the empty part before the image.
             TextNode("start", TextType.IMAGE, "https://example.com/start.jpg"),
             TextNode(" and some following text", TextType.NORMAL)
         ]
@@ -111,7 +111,6 @@ class TestSplitNodesImage(unittest.TestCase):
         text = "[Click](https://example.com/click)!"
         node = TextNode(text, TextType.NORMAL)
         result = split_nodes_link([node])
-        # Depending on implementation, an empty TEXT node before the link may be omitted.
         expected = [
             TextNode("Click", TextType.LINK, "https://example.com/click"),
             TextNode("!", TextType.NORMAL)

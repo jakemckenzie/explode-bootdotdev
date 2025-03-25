@@ -1,5 +1,5 @@
 from typing import List, Optional, Dict, Any
-from htmlnode import HTMLNode
+from src.mypackage.html_node import HTMLNode
 
 class ParentNode(HTMLNode):
     def __init__(

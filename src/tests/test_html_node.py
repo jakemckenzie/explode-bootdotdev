@@ -1,5 +1,5 @@
 import unittest
-from htmlnode import HTMLNode
+from src.mypackage.html_node import HTMLNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_props_to_html_empty(self) -> None:

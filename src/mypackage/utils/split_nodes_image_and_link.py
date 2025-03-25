@@ -1,6 +1,6 @@
 from typing import List, Callable
-from textnode import TextNode, TextType
-from extract_links import extract_markdown_images, extract_markdown_links
+from src.mypackage.text_node import TextNode, TextType
+from src.mypackage.utils.extract_links import extract_markdown_images, extract_markdown_links
 
 def _split_node(
         node: TextNode,       
