@@ -13,7 +13,7 @@ class TestTextNode(unittest.TestCase):
         node = TextNode("Example", TextType.ITALIC, "https://example.com")
         expected = "TextNode(Example, italic, https://example.com)"
         self.assertEqual(repr(node), expected)
-        
+
     def test_link_node_equality(self):
         node1 = TextNode("Link", TextType.LINK, "https://example.com")
         node2 = TextNode("Link", TextType.LINK, "https://example.com")
@@ -30,6 +30,8 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(node1, node2)
         node2.text = "Different"
         self.assertNotEqual(node1, node2)
+    
+    
 
 if __name__ == "__main__":
     unittest.main()
