@@ -9,9 +9,9 @@ class ParentNode(HTMLNode):
         props: Optional[Dict[str, any]] = None
     ) -> None:
         if tag is None:
-            raise ValueError("parent tag is feeling naked, give it a tag, my dude!")
+            raise ValueError("👨‍👩‍👧parent tag is feeling naked, give it a tag, my dude!👨‍👩‍👧")
         if children is None or len(children) == 0:
-            raise ValueError("family matters!!! this parent needs at least one child")
+            raise ValueError("👨‍👩‍👧‍👦family matters!!! this parent needs at least one child👨‍👩‍👧‍👦")
         super().__init__(
             tag = tag, 
             value = None, 
@@ -21,9 +21,9 @@ class ParentNode(HTMLNode):
     
     def to_html(self) -> str:
         if self.tag is None:
-            raise ValueError("parent tag is feeling naked, give it a tag, my dude!")
+            raise ValueError("👨‍👩‍👧parent tag is feeling naked, give it a tag, my dude!👨‍👩‍👧")
         if not self.children:
-            raise ValueError("family matters!!! this parent needs at least one child")
+            raise ValueError("👨‍👩‍👧‍👦family matters!!! this parent needs at least one child👨‍👩‍👧‍👦")
         children_html = "".join(child.to_html() for child in self.children)
         props_string = self.props_to_html()
         return f"<{self.tag}{props_string}>{children_html}</{self.tag}>"
