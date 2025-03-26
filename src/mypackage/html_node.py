@@ -13,8 +13,17 @@ class HTMLNode:
             self.children:List[HTMLNode] = children if children is not None else []
             self.props: Dict[str, Any] = props if props is not None else {}
     
-    def to_html(self):
-        raise NotImplementedError("sub classes should implement to_html() my dude")
+    def to_html(self) -> str:
+        if self.tag is None:
+            return self.value if self.value is not None else ""
+        
+        props_str: str = self.props_to_html()
+        opening_tag: str = f"<{self.tag}{props_str}>"
+        closing_tag: str = f"</{self.tag}>"
+
+        inner_html: str = (self.value if self.value is not None else "") + "".join(child.to_html() for child in self.children)
+        
+        return f"{opening_tag}{inner_html}{closing_tag}"
     
     def props_to_html(self):
         if not self.props:
