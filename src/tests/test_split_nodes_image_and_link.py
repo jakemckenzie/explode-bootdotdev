@@ -1,6 +1,7 @@
+from typing import List
 import unittest
 from src.mypackage.text_node import TextNode, TextType
-from src.mypackage.utils.split_nodes_image_and_link import split_nodes_image, split_nodes_link
+from src.mypackage.utils.split_nodes_image_and_link import split_nodes, split_nodes_image, split_nodes_link
 
 class TestSplitNodesImage(unittest.TestCase):
     def test_split_single_image(self):
@@ -124,6 +125,73 @@ class TestSplitNodesImage(unittest.TestCase):
             TextNode("solo", TextType.IMAGE, "https://example.com/solo.jpg")
         ]
         self.assertListEqual(expected, result)
+    
+    def test_mixed_content_separate(self):
+        text = ("Here is an image ![img](https://example.com/image.jpg) and "
+                "a link [link](https://example.com/link)")
+        node = TextNode(text, TextType.NORMAL)
+        
+        image_result = split_nodes_image([node])
+        for n in image_result:
+            self.assertNotEqual(n.text_type, TextType.LINK, 
+                "Image splitting should not produce LINK nodes")
+        
+        link_result = split_nodes_link([node])
+        for n in link_result:
+            self.assertNotEqual(n.text_type, TextType.IMAGE,
+                "Link splitting should not produce IMAGE nodes")
+
+    def test_order_independence(self):
+        text = ("Text with image ![img](https://example.com/image.jpg) and "
+                "link [link](https://example.com/link)")
+        original_node = TextNode(text, TextType.NORMAL)
+        
+        intermediate1 = split_nodes_image([original_node])
+        result_order1 = split_nodes_link(intermediate1)
+        
+        intermediate2 = split_nodes_link([original_node])
+        result_order2 = split_nodes_image(intermediate2)
+        
+        image_count1 = 0
+        link_count1 = 0
+        for n in result_order1:
+            if n.text_type == TextType.IMAGE:
+                image_count1 += 1
+            elif n.text_type == TextType.LINK:
+                link_count1 += 1
+
+        image_count2 = 0
+        link_count2 = 0
+        for n in result_order2:
+            if n.text_type == TextType.IMAGE:
+                image_count2 += 1
+            elif n.text_type == TextType.LINK:
+                link_count2 += 1
+        
+        self.assertEqual(image_count1, 1, "There should be exactly one IMAGE token")
+        self.assertEqual(link_count1, 1, "There should be exactly one LINK token")
+        self.assertEqual(image_count2, 1, "There should be exactly one IMAGE token")
+        self.assertEqual(link_count2, 1, "There should be exactly one LINK token")
+    
+    def test_dummy_injection_independence(self):
+        def dummy_extract(text: str) -> List[tuple]:
+            pos = text.find("DUMMY")
+            if pos == -1:
+                return []
+            return [("DUMMY", "dummy_meta")]
+        
+        def dummy_format(token_text: str, token_meta: str) -> str:
+            return token_text
+        
+        text = "Start DUMMY middle DUMMY end"
+        node = TextNode(text, TextType.NORMAL)
+        
+        result = split_nodes([node], dummy_extract, dummy_format, TextType.LINK)
+        
+        self.assertTrue(len(result) >= 2, "Result should contain at least two nodes after splitting")
+
+        self.assertEqual(result[1].text, "DUMMY", "Token text should be 'DUMMY'")
+        self.assertEqual(result[1].text_type, TextType.LINK, "Token type should be LINK")
 
 if __name__ == "__main__":
     unittest.main()
