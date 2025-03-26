@@ -1,2 +1,6 @@
+.gitignore
+
+public/
+
 venv/
 __pycache__/

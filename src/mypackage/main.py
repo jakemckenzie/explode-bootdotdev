@@ -1,38 +1,40 @@
-from src.mypackage.text_node import TextNode, TextType
-from src.mypackage.html_node import HTMLNode
-from src.mypackage.parent_node import ParentNode
-from src.mypackage.tree_node import TreeNode
-from src.mypackage.leaf_node import LeafNode
-from src.mypackage.text_node_to_html_node import text_node_to_html_node
+import os
+import shutil
+from typing import List
 
+def copy_recursive_func(src: str, dst: str) -> None:
 
-def main():
-    print("=== Demonstrating each file in mypackage/ except utils ===\n")
+    if not os.path.exists(dst):
+        os.mkdir(dst)
+    
+    items: List[str] = os.listdir(src)
+    
+    def copy_item(item: str) -> None:
+        s_item: str = os.path.join(src, item)
+        d_item: str = os.path.join(dst, item)
+        if os.path.isdir(s_item):
+            print(f"Copying directory: {s_item}")
+            os.mkdir(d_item)
 
-    # 1) text_node.py
-    text_node = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
-    print("TextNode:", text_node)
+            copy_recursive_func(s_item, d_item)
+        else:
+            print(f"Copying file: {s_item}")
+            shutil.copy(s_item, d_item)
+    
+    list(map(copy_item, items))
 
-    # 2) html_node.py
-    html_node = HTMLNode(tag="p", value="Hello, HTMLNode!", props={"class": "my-paragraph"})
-    print("HTMLNode:", html_node)
+def main() -> None:
+    src_dir = "static"
+    dst_dir = "public"
 
-    # 3) parent_node.py
-    parent = ParentNode(tag="div", children=[html_node])
-    print("ParentNode:", parent)
+    if os.path.exists(dst_dir):
+        print(f"Deleting existing directory: {dst_dir}")
+        shutil.rmtree(dst_dir)
+    
+    os.mkdir(dst_dir)
 
-    # 4) tree_node.py
-    tree = TreeNode(tag="ul", value="This is a tree node")
-    print("TreeNode:", tree)
+    copy_recursive_func(src_dir, dst_dir)
+    print("Copy complete!")
 
-    # 5) leaf_node.py
-    leaf = LeafNode(tag="li", value="I am a leaf node!")
-    print("LeafNode:", leaf)
-
-    # 6) text_node_to_html_node.py
-    converted = text_node_to_html_node(text_node)
-    print("Converted TextNode to HTMLNode:", converted)
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
