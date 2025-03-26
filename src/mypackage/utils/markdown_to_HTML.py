@@ -7,6 +7,29 @@ from mypackage.leaf_node import LeafNode
 from mypackage.parent_node import ParentNode
 from typing import List
 
+class MarkdownToHTMLNode:
+    def __init__(self, markdown: str) -> None:
+        self.markdown: str = markdown
+        self.children: List[HTMLNode] = markdown_to_html_children(markdown)
+
+    def get_title(self) -> str:
+        for child in self.children:
+            if child.tag == "h1":
+                if child.value:
+                    return child.value.strip()
+        raise ValueError("No h1 header found in markdown.")
+
+    def to_html(self) -> str:
+        content_children: List[HTMLNode] = []
+        title_removed = False
+        for child in self.children:
+            if not title_removed and child.tag == "h1":
+                title_removed = True
+                continue
+            content_children.append(child)
+        container = HTMLNode(tag="div", children=content_children)
+        return container.to_html()
+
 def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
     if text_node.text_type == TextType.NORMAL:
         return LeafNode(tag="span", value=text_node.text)
