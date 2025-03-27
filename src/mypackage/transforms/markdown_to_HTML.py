@@ -163,7 +163,8 @@ def extract_title(markdown: str) -> str:
 def nodes_to_html(nodes: List[HTMLNode]) -> str:
     return ''.join(node.to_html() for node in nodes)
 
-def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
+
+def generate_page(from_path: str, template_path: str, dest_path: str, basepath: str) -> None:
     with open(from_path, "r", encoding="utf-8") as f:
         markdown_content: str = f.read()
 
@@ -173,10 +174,29 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     title: str = extract_title(markdown_content)
     html_nodes: List[HTMLNode] = markdown_to_html_children(markdown_content)
     html_content: str = nodes_to_html(html_nodes)
-    final_html: str = template_content.replace("{{ BASEPATH }}", basepath).replace("{{ BASEPATH }}", basepath)
+
+    final_html: str = (
+        template_content
+        .replace("{{ Title }}", title)
+        .replace("{{ Content }}", html_content)
+    )
+    
+    final_html = final_html.replace('href="/', f'href="{basepath}')
+    final_html = final_html.replace('src="/', f'src="{basepath}')
+    
     dest_dir: str = os.path.dirname(dest_path)
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
     
     with open(dest_path, "w", encoding="utf-8") as f:
         f.write(final_html)
+
+
+def generate_pages_recursive(content_dir: str, template_path: str, pub_dir: str, basepath: str) -> None:
+    for root, dirs, files in os.walk(content_dir):
+        for file in files:
+            if file.endswith(".md"):
+                from_path = os.path.join(root, file)
+                relative_path = os.path.relpath(from_path, content_dir)
+                dest_path = os.path.join(pub_dir, os.path.splitext(relative_path)[0] + ".html")
+                generate_page(from_path, template_path, dest_path, basepath)
