@@ -8,6 +8,9 @@ from src.mypackage.nodes.leaf_node import LeafNode
 from src.mypackage.nodes.parent_node import ParentNode
 from typing import List
 
+import sys
+basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
+
 
 class HTMLNode:
     def __init__(self, tag: str, value: str = "", props: dict = None, children: List['HTMLNode'] = None):
@@ -170,7 +173,7 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     title: str = extract_title(markdown_content)
     html_nodes: List[HTMLNode] = markdown_to_html_children(markdown_content)
     html_content: str = nodes_to_html(html_nodes)
-    final_html: str = template_content.replace("{{ Title }}", title).replace("{{ Content }}", html_content)
+    final_html: str = template_content.replace("{{ BASEPATH }}", basepath).replace("{{ BASEPATH }}", basepath)
     dest_dir: str = os.path.dirname(dest_path)
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
