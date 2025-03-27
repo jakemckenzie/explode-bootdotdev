@@ -1,5 +1,5 @@
 from typing import Optional, Dict, Any, List
-from src.mypackage.html_node import HTMLNode
+from src.mypackage.nodes.html_node import HTMLNode
 
 class TreeNode(HTMLNode):
     def __init__(

@@ -1,7 +1,7 @@
 import unittest
-from src.mypackage.text_node import TextNode, TextType
-from src.mypackage.text_node_to_html_node import text_node_to_html_node
-from src.mypackage.leaf_node import LeafNode
+from src.mypackage.nodes.text_node import TextNode, TextType
+from src.mypackage.nodes.text_node_to_html_node import text_node_to_html_node
+from src.mypackage.nodes.leaf_node import LeafNode
 
 class TestTextNodeToHtmlNode(unittest.TestCase):
     def test_normal_text(self) -> None:

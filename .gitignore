@@ -4,3 +4,5 @@ public/
 
 venv/
 __pycache__/
+explode_bootdotdev.egg-info
+static/images/tolkien.png:Zone.Identifier

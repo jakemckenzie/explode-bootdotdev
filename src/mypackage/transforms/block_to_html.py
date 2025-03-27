@@ -1,9 +1,10 @@
 from typing import List
-from mypackage import text_node_to_html_node
-from mypackage.block_to_block_type import BlockType, block_to_block_type
-from mypackage.html_node import HTMLNode
-from mypackage.text_node import TextNode, TextType
-from mypackage.utils import markdown_to_blocks, text_to_children
+
+from src.mypackage.nodes.html_node import HTMLNode
+from src.mypackage.nodes.text_node import TextNode, TextType
+from src.mypackage.transforms.block_to_block_type import BlockType, block_to_block_type
+from src.mypackage.transforms.markdown_to_HTML import text_node_to_html_node, text_to_children
+from src.mypackage.transforms.markdown_to_blocks import markdown_to_blocks
 
 def process_heading_block(block: str) -> HTMLNode:
     level:int = 0

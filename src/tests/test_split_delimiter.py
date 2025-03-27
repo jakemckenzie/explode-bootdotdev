@@ -1,5 +1,5 @@
 import unittest
-from src.mypackage.text_node import TextNode, TextType
+from src.mypackage.nodes.text_node import TextNode, TextType
 from src.mypackage.utils.split_delimiter import split_nodes_delimiter
 
 class TestSplitNodesDelimiter(unittest.TestCase):

@@ -1,5 +1,5 @@
 from typing import List
-from src.mypackage.text_node import TextNode, TextType
+from src.mypackage.nodes.text_node import TextNode, TextType
 from src.mypackage.utils.split_delimiter import split_nodes_delimiter
 from src.mypackage.utils.split_nodes_image_and_link import split_nodes_image, split_nodes_link
 

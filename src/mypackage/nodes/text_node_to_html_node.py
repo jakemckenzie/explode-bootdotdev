@@ -1,5 +1,5 @@
-from src.mypackage.text_node import TextNode, TextType
-from src.mypackage.leaf_node import LeafNode
+from src.mypackage.nodes.text_node import TextNode, TextType
+from src.mypackage.nodes.leaf_node import LeafNode
 
 def text_node_to_html_node(text_node: TextNode) -> LeafNode:
     match text_node.text_type:

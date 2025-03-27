@@ -14,16 +14,15 @@ class HTMLNode:
             self.props: Dict[str, Any] = props if props is not None else {}
     
     def to_html(self) -> str:
+        if self.value is None:
+            raise ValueError("🍃this leaf node is supposed to have a value🍃")
+        # Check if the value is empty and the tag is 'span'; if so, return an empty string
+        if self.tag == "span" and not self.value.strip():
+            return ""
         if self.tag is None:
-            return self.value if self.value is not None else ""
-        
-        props_str: str = self.props_to_html()
-        opening_tag: str = f"<{self.tag}{props_str}>"
-        closing_tag: str = f"</{self.tag}>"
-
-        inner_html: str = (self.value if self.value is not None else "") + "".join(child.to_html() for child in self.children)
-        
-        return f"{opening_tag}{inner_html}{closing_tag}"
+            return self.value
+        props_string = self.props_to_html()
+        return f"<{self.tag}{props_string}>{self.value}</{self.tag}>"
     
     def props_to_html(self):
         if not self.props:

@@ -1,4 +1,4 @@
-from src.mypackage.html_node import HTMLNode
+from src.mypackage.nodes.html_node import HTMLNode
 from typing import Optional, Dict, Any
 
 class LeafNode(HTMLNode):

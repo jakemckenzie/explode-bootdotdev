@@ -1,5 +1,5 @@
 from typing import List, Callable
-from src.mypackage.text_node import TextNode, TextType
+from src.mypackage.nodes.text_node import TextNode, TextType
 from src.mypackage.utils.extract_links import extract_markdown_images, extract_markdown_links
 
 def should_split(

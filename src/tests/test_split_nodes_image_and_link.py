@@ -1,6 +1,6 @@
 from typing import List
 import unittest
-from src.mypackage.text_node import TextNode, TextType
+from src.mypackage.nodes.text_node import TextNode, TextType
 from src.mypackage.utils.split_nodes_image_and_link import split_nodes, split_nodes_image, split_nodes_link
 
 class TestSplitNodesImage(unittest.TestCase):

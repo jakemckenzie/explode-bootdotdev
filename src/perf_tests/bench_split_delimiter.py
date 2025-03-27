@@ -1,7 +1,7 @@
 import time
 import unittest
 from src.mypackage.utils.split_delimiter import split_nodes_delimiter
-from src.mypackage.text_node import TextNode, TextType
+from src.mypackage.nodes.text_node import TextNode, TextType
 
 class TestSplitDelimiter(unittest.TestCase):
     def test_split_nodes_delimiter_benchmark(self) -> None:
