@@ -10,7 +10,7 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, project_root)
 
 # Corrected imports without the leading 'src.'
-from mypackage.transforms.markdown_to_HTML import generate_page, generate_pages_recursive
+from mypackage.transforms.markdown_to_HTML import generate_pages_recursive
 from mypackage.utils.move_files import move_files
 
 def main() -> None:

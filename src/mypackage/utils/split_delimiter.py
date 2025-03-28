@@ -1,6 +1,10 @@
 from typing import List
 from src.mypackage.nodes.text_node import TextNode, TextType
+"""
+TODO isolate the delimiter splitting
+TODO verify raw markdown parsing
 
+"""
 def split_nodes_delimiter(
         old_nodes: List[TextNode], 
         delimiter: str, 

@@ -9,8 +9,14 @@ from src.mypackage.nodes.parent_node import ParentNode
 from typing import List
 
 import sys
-basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
 
+from src.mypackage.utils.split_delimiter import split_nodes_delimiter
+basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
+"""
+TODO inspect html conversion of textnodes
+TODO verify raw markdown parsing
+
+"""
 
 class HTMLNode:
     def __init__(self, tag: str, value: str = "", props: dict = None, children: List['HTMLNode'] = None):
@@ -42,7 +48,7 @@ class HTMLNode:
 
 def text_node_to_html_node(text_node: TextNode, wrap: bool = True) -> HTMLNode:
     if text_node.text_type == TextType.NORMAL:
-        # If we don't want to wrap normal text, return a LeafNode with no tag
+        # if we don't want to wrap normal text, return a LeafNode with no tag
         if not wrap:
             return LeafNode(tag=None, value=text_node.text)
         return LeafNode(tag="span", value=text_node.text)
@@ -78,10 +84,20 @@ def remove_quote_prefix(line: str) -> str:
 def text_to_children(text: str, wrap: bool = True) -> List[HTMLNode]:
     text = text.replace("\n", " ")
     result: List[HTMLNode] = []
+
     text_nodes = text_to_textnodes(text)
-    for text_node in text_nodes:
-        result.append(text_node_to_html_node(text_node, wrap=wrap))
+    styles = [
+        ("`", TextType.CODE),
+        ("*", TextType.BOLD),
+        ("_", TextType.ITALIC)
+    ]
+
+    for delimiter, text_type in styles:
+        text_nodes = split_nodes_delimiter(text_nodes, delimiter, text_type)
+
     return result
+
+
 
 def markdown_to_html_paragraph(markdown: str) -> HTMLNode:
     return ParentNode(tag="p", children=text_to_children(markdown))
@@ -115,6 +131,11 @@ def markdown_to_html_ordered_list(markdown: str) -> HTMLNode:
             for line in lines
         ],
     )
+
+"""
+TODO Integrate lines_grouped_by_prefix?
+
+"""
 
 def lines_grouped_by_prefix(markdown: str) -> List[str]:
     result = []

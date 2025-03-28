@@ -5,7 +5,10 @@ from src.mypackage.nodes.text_node import TextNode, TextType
 from src.mypackage.transforms.block_to_block_type import BlockType, block_to_block_type
 from src.mypackage.transforms.markdown_to_HTML import text_node_to_html_node, text_to_children
 from src.mypackage.transforms.markdown_to_blocks import markdown_to_blocks
+"""
+TODO Integrate block_to_html?
 
+"""
 def process_heading_block(block: str) -> HTMLNode:
     level:int = 0
     for char in block:
